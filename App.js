@@ -5,7 +5,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>
-        Встановлення ПЗ для роботи Native зайняло пів SSD на компютері
+        Встановлення ПЗ для роботи Native зайняло пів SSD на компютеріAAA
       </Text>
       <StatusBar style="auto" />
     </View>
