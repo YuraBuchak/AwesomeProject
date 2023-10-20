@@ -1,15 +1,30 @@
-import { ImageBackground, StyleSheet, View } from "react-native";
+import {
+  ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import bgrImage from "../../assets/images/bgrNature.jpg";
 import { RegistrationForm } from "../Components/RegistrationForm";
 
 export const RegistrationScreen = () => {
   return (
     <>
-      <View style={styles.container}>
-        <ImageBackground source={bgrImage} style={styles.imageBackground}>
-          <RegistrationForm />
-        </ImageBackground>
-      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+        keyboardVerticalOffset={-190}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <ImageBackground source={bgrImage} style={styles.imageBackground}>
+              <RegistrationForm />
+            </ImageBackground>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </>
   );
 };

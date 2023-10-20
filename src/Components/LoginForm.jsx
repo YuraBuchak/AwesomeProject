@@ -1,29 +1,57 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { AuthInput } from "./AuthTextInput";
 
 export const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  const data = {
+    email,
+    password,
+  };
+
+  const handleShowPass = () => {
+    setIsPasswordHidden(!isPasswordHidden);
+  };
+
+  const changeEmail = (text) => {
+    setEmail(text);
+  };
+
+  const changePass = (text) => {
+    setPassword(text);
+  };
+
+  const handleAuthentication = () => {
+    console.log(data);
+  };
+
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Увійти</Text>
 
         <View style={styles.form}>
-          <TextInput
-            style={styles.input}
+          <AuthInput
+            value={email}
             placeholder={"Адреса електронної пошти"}
+            onChangeText={changeEmail}
           />
-          <TextInput style={styles.input} placeholder={"Пароль"} />
-          <TouchableOpacity style={styles.showText}>
-            <Text style={styles.showPassword}>Показати</Text>
+          <AuthInput
+            value={password}
+            placeholder={"Пароль"}
+            secureTextEntry={isPasswordHidden ? true : false}
+            onChangeText={changePass}
+          />
+          <TouchableOpacity style={styles.showText} onPress={handleShowPass}>
+            <Text style={styles.showPassword}>
+              {isPasswordHidden ? "Показати" : "Приховати"}
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={handleAuthentication}>
             <Text style={styles.btnText}>Увійти</Text>
           </TouchableOpacity>
         </View>
@@ -61,20 +89,7 @@ const styles = StyleSheet.create({
   form: {
     width: "100%",
   },
-  input: {
-    position: "relative",
-    width: "100%",
-    backgroundColor: "#F6F6F6",
-    borderColor: "#E8E8E8",
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 16,
-    padding: 16,
-    fontSize: 16,
-    color: "#212121",
-    fontWeight: "400",
-    lineHeight: 18,
-  },
+
   showText: {
     position: "absolute",
     top: 98,

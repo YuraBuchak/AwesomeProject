@@ -7,8 +7,41 @@ import {
   View,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { useState } from "react";
+import { AuthInput } from "./AuthTextInput";
 
 export const RegistrationForm = () => {
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  const data = {
+    login,
+    email,
+    password,
+  };
+
+  const handleShowPass = () => {
+    setIsPasswordHidden(!isPasswordHidden);
+  };
+
+  const changeLogin = (text) => {
+    setLogin(text);
+  };
+
+  const changeEmail = (text) => {
+    setEmail(text);
+  };
+
+  const changePass = (text) => {
+    setPassword(text);
+  };
+
+  const handleAuthentication = () => {
+    console.log(data);
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -22,17 +55,29 @@ export const RegistrationForm = () => {
         <Text style={styles.title}>Реєстрація</Text>
 
         <View style={styles.form}>
-          <TextInput style={styles.input} placeholder={"Логін"} />
-          <TextInput
-            style={styles.input}
-            placeholder={"Адреса електронної пошти"}
+          <AuthInput
+            value={login}
+            placeholder={"Логін"}
+            onChangeText={changeLogin}
           />
-          <TextInput style={styles.input} placeholder={"Пароль"} />
-          <TouchableOpacity style={styles.showText}>
-            <Text style={styles.showPassword}>Показати</Text>
+          <AuthInput
+            value={email}
+            placeholder={"Адреса електронної пошти"}
+            onChangeText={changeEmail}
+          />
+          <AuthInput
+            value={password}
+            placeholder={"Пароль"}
+            secureTextEntry={isPasswordHidden ? true : false}
+            onChangeText={changePass}
+          />
+          <TouchableOpacity style={styles.showText} onPress={handleShowPass}>
+            <Text style={styles.showPassword}>
+              {isPasswordHidden ? "Показати" : "Приховати"}
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={handleAuthentication}>
             <Text style={styles.btnText}>Зареєструватися</Text>
           </TouchableOpacity>
         </View>
