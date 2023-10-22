@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AuthInput } from "./AuthTextInput";
+import { useNavigation } from "@react-navigation/native";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  const navigation = useNavigation();
 
   const data = {
     email,
@@ -26,6 +29,7 @@ export const LoginForm = () => {
 
   const handleAuthentication = () => {
     console.log(data);
+    navigation.navigate("Home");
   };
 
   return (
@@ -56,7 +60,7 @@ export const LoginForm = () => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
           <Text style={styles.linkText}>
             Немає акаунту?
             <Text style={styles.registerText}> Зареєструватись</Text>

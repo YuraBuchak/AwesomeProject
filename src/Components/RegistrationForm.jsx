@@ -1,14 +1,8 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";
 import { AuthInput } from "./AuthTextInput";
+import { useNavigation } from "@react-navigation/native";
 
 export const RegistrationForm = () => {
   const [login, setLogin] = useState("");
@@ -21,6 +15,8 @@ export const RegistrationForm = () => {
     email,
     password,
   };
+
+  const navigation = useNavigation();
 
   const handleShowPass = () => {
     setIsPasswordHidden(!isPasswordHidden);
@@ -40,6 +36,7 @@ export const RegistrationForm = () => {
 
   const handleAuthentication = () => {
     console.log(data);
+    navigation.navigate("Home");
   };
 
   return (
@@ -82,7 +79,7 @@ export const RegistrationForm = () => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.linkText}>Вже є акаунт? Увійти</Text>
         </TouchableOpacity>
       </View>
