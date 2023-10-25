@@ -1,7 +1,6 @@
 import { Image, StyleSheet, Text, View, FlatList } from "react-native";
 import { MapPin, MessageCircle, ThumbsUp } from "react-native-feather";
 import { UserOfList } from "./UserOfList";
-// import { UserInfo } from "./UserInfo";
 
 const data = require("../data/data.json");
 
