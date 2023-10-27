@@ -75,6 +75,7 @@ export const BottomNavigator = () => {
             },
             headerLeft: () => <ButtonBack />,
             headerTitleAlign: "center",
+            unmountOnBlur: true,
             tabBarIcon: ({ focused }) => (
               <AntDesign
                 name="plus"

@@ -11,6 +11,7 @@ export const PostsScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 16,
     backgroundColor: "#ffff",
   },

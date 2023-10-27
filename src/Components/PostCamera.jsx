@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   imgContainer: {
     width: "100%",
     justifyContent: "center",
+    backgroundColor: "rgba(232, 232, 232, 1)",
   },
   camera: {
     height: 240,
