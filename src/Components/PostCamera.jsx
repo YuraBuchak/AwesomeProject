@@ -4,13 +4,17 @@ import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
+import { Loader } from "react-native-feather";
 
 export const PostCamera = ({ takePhoto, photo }) => {
   const [newPhoto, setNewPhoto] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [hasPermission, setHasPermission] = useState(null);
+  const [isLoader, setIsLoader] = useState(false);
 
   useEffect(() => {
+    setIsLoader(false);
+
     if (!photo) {
       setNewPhoto(null);
     }
@@ -35,6 +39,7 @@ export const PostCamera = ({ takePhoto, photo }) => {
 
   const handleTakePhoto = async () => {
     try {
+      setIsLoader(true);
       if (cameraRef) {
         const { uri } = await cameraRef.takePictureAsync();
         await MediaLibrary.createAssetAsync(uri);
@@ -43,38 +48,44 @@ export const PostCamera = ({ takePhoto, photo }) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoader(false);
     }
   };
 
   return (
     <>
-      {newPhoto ? (
-        <View style={styles.imgContainer}>
-          <Image source={{ uri: newPhoto }} style={styles.camera} />
-          <View style={styles.cameraBtn}>
-            <FontAwesome
-              name="camera"
-              size={24}
-              color="rgba(189, 189, 189, 1)"
-            />
-          </View>
-        </View>
-      ) : (
-        <View style={styles.imgContainer}>
+      <View style={styles.imgContainer}>
+        {!photo ? (
           <Camera style={styles.camera} ref={setCameraRef}>
-            <TouchableOpacity
-              onPress={handleTakePhoto}
-              style={styles.cameraBtn}
-            >
+            {isLoader ? (
+              <Loader size={24} color="rgba(232, 232, 232, 1)" />
+            ) : (
+              <TouchableOpacity
+                onPress={handleTakePhoto}
+                style={styles.cameraBtn}
+              >
+                <FontAwesome
+                  name="camera"
+                  size={24}
+                  color="rgba(189, 189, 189, 1)"
+                />
+              </TouchableOpacity>
+            )}
+          </Camera>
+        ) : (
+          <>
+            <Image source={{ uri: newPhoto }} style={styles.camera} />
+            <View style={styles.cameraBtn}>
               <FontAwesome
                 name="camera"
                 size={24}
                 color="rgba(189, 189, 189, 1)"
               />
-            </TouchableOpacity>
-          </Camera>
-        </View>
-      )}
+            </View>
+          </>
+        )}
+      </View>
     </>
   );
 };
@@ -83,7 +94,7 @@ const styles = StyleSheet.create({
   imgContainer: {
     width: "100%",
     justifyContent: "center",
-    backgroundColor: "rgba(232, 232, 232, 1)",
+    backgroundColor: "black",
   },
   camera: {
     height: 240,
