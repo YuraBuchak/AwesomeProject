@@ -1,10 +1,10 @@
 import { View, StyleSheet } from "react-native";
 import { PostsList } from "../Components/PostList";
 
-export const PostsScreen = () => {
+export const PostsScreen = ({ route }) => {
   return (
     <View style={styles.container}>
-      <PostsList />
+      <PostsList route={route} />
     </View>
   );
 };

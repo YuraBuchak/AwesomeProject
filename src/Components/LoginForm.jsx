@@ -29,7 +29,7 @@ export const LoginForm = () => {
 
   const handleAuthentication = () => {
     console.log(data);
-    navigation.navigate("Home");
+    navigation.navigate("BottomNavigator");
   };
 
   return (

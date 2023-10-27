@@ -1,14 +1,28 @@
 import { Image, StyleSheet, Text, View, FlatList } from "react-native";
 import { MapPin, MessageCircle, ThumbsUp } from "react-native-feather";
 import { UserOfList } from "./UserOfList";
+import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-const data = require("../data/data.json");
+// const data = require("../data/data.json");
 
-export const PostsList = () => {
+export const PostsList = ({ route }) => {
+  const [photos, setPhotos] = useState([]);
+  const post = route.params;
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (post) {
+      setPhotos((prev) => [...prev, post]);
+    }
+    console.log(route);
+  }, [route.params]);
+
   return (
     <FlatList
-      data={data}
-      keyExtractor={(item) => item.id.toString()}
+      data={photos}
+      keyExtractor={(item, index) => index.toString()}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={() => <UserOfList />}
       renderItem={({ item }) => (
@@ -26,7 +40,7 @@ export const PostsList = () => {
                     height={24}
                     style={{ transform: [{ rotateY: "180deg" }] }}
                   />
-                  <Text style={styles.optionText}>{item.comments}</Text>
+                  <Text style={styles.optionText}>{item.comments || "0"}</Text>
                 </View>
                 <View style={styles.likes}>
                   <ThumbsUp
@@ -35,11 +49,14 @@ export const PostsList = () => {
                     width={24}
                     height={24}
                   />
-                  <Text style={styles.optionText}>{item.likes}</Text>
+                  <Text style={styles.optionText}>{item.likes || "0"}</Text>
                 </View>
               </View>
 
-              <View style={styles.place}>
+              <TouchableOpacity
+                style={styles.place}
+                onPress={() => navigation.navigate("MapScreen", { item })}
+              >
                 <MapPin
                   stroke="rgba(189, 189, 189, 1)"
                   fill="#fff"
@@ -47,7 +64,7 @@ export const PostsList = () => {
                   height={24}
                 />
                 <Text style={styles.optionText}>{item.place}</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

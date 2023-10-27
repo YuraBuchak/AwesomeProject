@@ -1,15 +1,16 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
-import { PostsScreen } from "./PostsScreen";
-import { CreatePostsScreen } from "./CreatePostsScreen";
-import { ProfileScreen } from "./ProfileScreen";
+
+import { PostsScreen } from "../Screens/PostsScreen";
 import { ButtonExit } from "../Components/ButtonExit";
 import { ButtonBack } from "../Components/ButtonBack";
+import { ProfileScreen } from "../Screens/ProfileScreen";
+import { CreatePostsScreen } from "../Screens/CreatePostsScreen";
 
 const TabsBottom = createBottomTabNavigator();
 
-export const Home = () => {
+export const BottomNavigator = () => {
   return (
     <>
       <TabsBottom.Navigator

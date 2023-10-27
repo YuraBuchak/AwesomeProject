@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -9,8 +9,10 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
 import { Trash2, MapPin } from "react-native-feather";
+import { PostCamera } from "../Components/PostCamera";
+import { useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
 
 const buttonStyles = {
   button: {
@@ -40,8 +42,27 @@ const buttonTextStyles = {
 };
 
 export const CreatePostsScreen = () => {
-  const [name, setName] = useState(null);
-  const [place, setPlace] = useState(null);
+  const [name, setName] = useState("");
+  const [place, setPlace] = useState("");
+
+  const [photo, setPhoto] = useState(null);
+  const [location, setlocation] = useState(null);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.log("Permission to access location was denied");
+        }
+        const { coords } = await Location.getCurrentPositionAsync({});
+        setlocation(coords);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   const selectName = (value) => {
     setName(value);
@@ -49,6 +70,22 @@ export const CreatePostsScreen = () => {
 
   const selectPlace = (value) => {
     setPlace(value);
+  };
+
+  const handleTakePhoto = (data) => {
+    setPhoto(data);
+  };
+
+  const handlePublishPost = () => {
+    if (!photo || !name || !place) return;
+    navigation.navigate("PostsScreen", { photo, place, name, location });
+    handleDelete();
+  };
+
+  const handleDelete = () => {
+    setPhoto(null);
+    setName("");
+    setPlace("");
   };
 
   return (
@@ -62,16 +99,13 @@ export const CreatePostsScreen = () => {
           <View>
             <View style={styles.cameraWrapper}>
               <View style={styles.placeholderImg}>
-                <TouchableOpacity style={styles.cameraBtn}>
-                  <FontAwesome
-                    name="camera"
-                    size={24}
-                    color="rgba(189, 189, 189, 1)"
-                  />
-                </TouchableOpacity>
+                <PostCamera photo={photo} takePhoto={handleTakePhoto} />
               </View>
-              <Text style={styles.cameraText}>Завантажте фото</Text>
+              <Text style={styles.cameraText}>
+                {photo ? "Редагувати фото" : "Завантажте фото"}
+              </Text>
             </View>
+
             <View style={styles.inputWrapper}>
               <TextInput
                 value={name}
@@ -93,6 +127,7 @@ export const CreatePostsScreen = () => {
               />
             </View>
             <TouchableOpacity
+              onPress={handlePublishPost}
               style={[
                 buttonStyles.button,
                 name && place ? buttonStyles.buttonActive : null,
@@ -101,7 +136,9 @@ export const CreatePostsScreen = () => {
               <Text
                 style={[
                   buttonTextStyles.buttonText,
-                  name && place ? buttonTextStyles.buttonTextActive : null,
+                  name && place && photo
+                    ? buttonTextStyles.buttonTextActive
+                    : null,
                 ]}
               >
                 Опублікувати
@@ -109,7 +146,7 @@ export const CreatePostsScreen = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.trashWrapper}>
-            <TouchableOpacity style={styles.trashButton}>
+            <TouchableOpacity style={styles.trashButton} onPress={handleDelete}>
               <Trash2 width={24} height={24} color={"rgba(189, 189, 189, 1)"} />
             </TouchableOpacity>
           </View>
@@ -139,14 +176,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
-  },
-  cameraBtn: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-    backgroundColor: "rgba(255, 255, 255, 1)",
   },
   cameraText: {
     color: "rgba(189, 189, 189, 1)",

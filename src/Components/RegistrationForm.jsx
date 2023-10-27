@@ -36,7 +36,7 @@ export const RegistrationForm = () => {
 
   const handleAuthentication = () => {
     console.log(data);
-    navigation.navigate("Home");
+    navigation.navigate("BottomNavigator");
   };
 
   return (
