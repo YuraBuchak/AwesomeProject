@@ -130,7 +130,7 @@ export const CreatePostsScreen = () => {
               onPress={handlePublishPost}
               style={[
                 buttonStyles.button,
-                name && place ? buttonStyles.buttonActive : null,
+                name && place && photo ? buttonStyles.buttonActive : null,
               ]}
             >
               <Text

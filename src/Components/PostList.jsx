@@ -32,7 +32,12 @@ export const PostsList = ({ route }) => {
             <Text style={styles.title}>{item.description}</Text>
             <View style={styles.option}>
               <View style={styles.optionInfo}>
-                <View style={styles.comments}>
+                <TouchableOpacity
+                  style={styles.comments}
+                  onPress={() =>
+                    navigation.navigate("CommentsScreen", { item })
+                  }
+                >
                   <MessageCircle
                     stroke="rgba(255, 108, 0, 1)"
                     fill="rgba(255, 108, 0, 1)"
@@ -41,7 +46,7 @@ export const PostsList = ({ route }) => {
                     style={{ transform: [{ rotateY: "180deg" }] }}
                   />
                   <Text style={styles.optionText}>{item.comments || "0"}</Text>
-                </View>
+                </TouchableOpacity>
                 <View style={styles.likes}>
                   <ThumbsUp
                     stroke="rgba(255, 108, 0, 1)"
