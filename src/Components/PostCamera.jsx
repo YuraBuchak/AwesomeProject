@@ -58,20 +58,20 @@ export const PostCamera = ({ takePhoto, photo }) => {
       <View style={styles.imgContainer}>
         {!photo ? (
           <Camera style={styles.camera} ref={setCameraRef}>
-            {isLoader ? (
-              <Loader size={24} color="rgba(232, 232, 232, 1)" />
-            ) : (
-              <TouchableOpacity
-                onPress={handleTakePhoto}
-                style={styles.cameraBtn}
-              >
+            <TouchableOpacity
+              onPress={handleTakePhoto}
+              style={styles.cameraBtn}
+            >
+              {isLoader ? (
+                <Loader size={24} color="rgba(232, 232, 232, 1)" />
+              ) : (
                 <FontAwesome
                   name="camera"
                   size={24}
                   color="rgba(189, 189, 189, 1)"
                 />
-              </TouchableOpacity>
-            )}
+              )}
+            </TouchableOpacity>
           </Camera>
         ) : (
           <>

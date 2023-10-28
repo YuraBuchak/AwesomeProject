@@ -68,7 +68,9 @@ export const PostsList = ({ route }) => {
                   width={24}
                   height={24}
                 />
-                <Text style={styles.optionText}>{item.place}</Text>
+                <Text style={`${styles.optionText} ${styles.underlineText}`}>
+                  {item.place}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -130,5 +132,8 @@ const styles = StyleSheet.create({
   },
   bottomMargin: {
     marginBottom: 40,
+  },
+  underlineText: {
+    textDecorationLine: "underline",
   },
 });

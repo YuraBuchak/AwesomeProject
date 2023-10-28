@@ -78,6 +78,7 @@ export const CreatePostsScreen = () => {
 
   const handlePublishPost = () => {
     if (!photo || !name || !place) return;
+    navigation.navigate("ProfileScreen", { photo, place, name, location });
     navigation.navigate("PostsScreen", { photo, place, name, location });
     handleDelete();
   };

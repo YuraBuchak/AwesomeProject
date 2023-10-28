@@ -4,7 +4,7 @@ import bgrImage from "../../assets/images/bgrNature.jpg";
 import { ButtonExit } from "../Components/ButtonExit";
 import { ProfileList } from "../Components/ProfileList";
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -26,7 +26,7 @@ export const ProfileScreen = () => {
             <Text style={styles.userName}>Yurii Buchak</Text>
           </View>
 
-          <ProfileList />
+          <ProfileList route={route} />
         </View>
       </ImageBackground>
     </View>
@@ -35,8 +35,10 @@ export const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: "100vw",
-    height: "100vh",
+    backgroundColor: "#ffff",
+    // height: "100vh",
   },
   imageBackground: {
     resizeMode: "cover",

@@ -1,15 +1,35 @@
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { MapPin, MessageCircle, ThumbsUp } from "react-native-feather";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
 
-const data = require("../data/data.json");
+// const data = require("../data/data.json");
 
-export const ProfileList = () => {
+export const ProfileList = ({ route }) => {
+  const [photos, setPhotos] = useState([]);
+  const post = route.params;
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (post) {
+      setPhotos((prev) => [...prev, post]);
+    }
+    console.log(route);
+  }, [route.params]);
+
   return (
     <FlatList
-      data={data}
+      data={photos}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => (
         <View style={styles.postWrapper}>
           <Image style={styles.photo} source={{ uri: item.photo }} />
@@ -17,7 +37,12 @@ export const ProfileList = () => {
             <Text style={styles.title}>{item.description}</Text>
             <View style={styles.option}>
               <View style={styles.optionInfo}>
-                <View style={styles.comments}>
+                <TouchableOpacity
+                  style={styles.comments}
+                  onPress={() =>
+                    navigation.navigate("CommentsScreen", { item })
+                  }
+                >
                   <MessageCircle
                     stroke="rgba(255, 108, 0, 1)"
                     fill="rgba(255, 108, 0, 1)"
@@ -25,8 +50,8 @@ export const ProfileList = () => {
                     height={24}
                     style={{ transform: [{ rotateY: "180deg" }] }}
                   />
-                  <Text style={styles.optionText}>{item.comments}</Text>
-                </View>
+                  <Text style={styles.optionText}>{item.comments || "0"}</Text>
+                </TouchableOpacity>
                 <View style={styles.likes}>
                   <ThumbsUp
                     stroke="rgba(255, 108, 0, 1)"
@@ -34,19 +59,24 @@ export const ProfileList = () => {
                     width={24}
                     height={24}
                   />
-                  <Text style={styles.optionText}>{item.likes}</Text>
+                  <Text style={styles.optionText}>{item.likes || "0"}</Text>
                 </View>
               </View>
 
-              <View style={styles.place}>
+              <TouchableOpacity
+                style={styles.place}
+                onPress={() => navigation.navigate("MapScreen", { item })}
+              >
                 <MapPin
                   stroke="rgba(189, 189, 189, 1)"
                   fill="#fff"
                   width={24}
                   height={24}
                 />
-                <Text style={styles.optionText}>{item.place}</Text>
-              </View>
+                <Text style={`${styles.optionText} ${styles.underlineText}`}>
+                  {item.place}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -105,6 +135,9 @@ const styles = StyleSheet.create({
   optionText: {
     fontWeight: "400",
     fontSize: 16,
+  },
+  underlineText: {
+    textDecorationLine: "underline",
   },
   bottomMargin: {
     marginBottom: 410,
